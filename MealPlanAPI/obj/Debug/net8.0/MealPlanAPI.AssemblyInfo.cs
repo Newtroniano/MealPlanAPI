@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MealPlanAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e5ccc4b93c92ae22cdfe891390f09b3f16d44fe4")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a56919937a4807aed6e270d22e9d1dd6c1747c1e")]
 [assembly: System.Reflection.AssemblyProductAttribute("MealPlanAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MealPlanAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
