@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,8 @@ string dbConnection = Environment.GetEnvironmentVariable("DB_CONNECTION")
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(dbConnection));
+
+builder.Services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build(); 
 
