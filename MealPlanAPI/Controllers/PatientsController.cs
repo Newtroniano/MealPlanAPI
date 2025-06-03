@@ -1,7 +1,8 @@
 ﻿// MealPlanAPI/Controllers/PatientController.cs
 using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
 using MealPlanAPI.Models.DTOs.PatientDto;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 
 [ApiController]
@@ -83,11 +84,33 @@ public class PatientController : ControllerBase
             return NotFound("Paciente não encontrado.");
         }
 
-        // Soft delete (marca como deletado)
+       
         patient.IsDeleted = true;
         _dbContext.SaveChanges();
 
-        return NoContent(); // Retorna 204 No Content
+        return NoContent(); 
+    }
+
+
+    [HttpPatch("{id}")]
+    public IActionResult ReactivePatient(int id)
+    {
+        var patient = _dbContext.Patients.Find(id);
+
+        if (patient == null)
+        {
+            return NotFound("Paciente não encontrado.");
+        }
+
+        if (!patient.IsDeleted)
+        {
+            return BadRequest("O paciente já está ativo.");
+        }
+
+        patient.IsDeleted = false;
+        _dbContext.SaveChanges();
+
+        return NoContent();
     }
 
     [HttpPut("{id}")]
