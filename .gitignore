@@ -5,4 +5,4 @@ bin/
 obj/
 
 .env
-appsettings.Development.json
+appsettings.json
