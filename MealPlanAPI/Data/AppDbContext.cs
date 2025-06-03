@@ -16,6 +16,12 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
 
         modelBuilder.Entity<Patient>().HasQueryFilter(p => !p.IsDeleted);
 
-        
+        modelBuilder.Entity<Food>().HasQueryFilter(p => !p.IsDeleted);
+
+        modelBuilder.Entity<MealPlan>().HasQueryFilter(p => !p.IsDeleted);
+
+        modelBuilder.Entity<MealPlanFood>().HasQueryFilter(p => !p.IsDeleted);
+
+
     }
 }

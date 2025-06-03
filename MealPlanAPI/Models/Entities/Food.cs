@@ -6,4 +6,10 @@
     public double ProteinPer100g { get; set; }
     public double CarbsPer100g { get; set; }
     public double FatPer100g { get; set; }
+
+    public bool IsDeleted { get; set; } = false;
+    public ICollection<MealPlanFood> MealPlanFoods { get; set; }
+
+
+
 }

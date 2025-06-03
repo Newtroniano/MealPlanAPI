@@ -1,3 +1,7 @@
+using AutoMapper;
+using MealPlanAPI.Models;
+using MealPlanAPI.Services;
+using MealPlanAPI.Services.Patient;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +17,13 @@ string dbConnection = Environment.GetEnvironmentVariable("DB_CONNECTION")
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(dbConnection));
+
+builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddScoped<IPatientService, PatientService>();
+builder.Services.AddScoped<IFoodService, FoodService>();
+builder.Services.AddScoped<IMealPlanService, MealPlanService>();
+
+
 
 var app = builder.Build(); 
 

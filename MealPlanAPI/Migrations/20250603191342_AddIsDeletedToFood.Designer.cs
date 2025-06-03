@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MealPlanAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250603191342_AddIsDeletedToFood")]
+    partial class AddIsDeletedToFood
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -146,10 +149,11 @@ namespace MealPlanAPI.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Notes")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -177,18 +181,11 @@ namespace MealPlanAPI.Migrations
                     b.Property<int>("FoodId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.Property<int>("MealPlanId")
                         .HasColumnType("int");
 
-                    b.Property<string>("MealTime")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("PortionSize")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("PortionSizeInGrams")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
@@ -379,7 +376,7 @@ namespace MealPlanAPI.Migrations
             modelBuilder.Entity("MealPlanFood", b =>
                 {
                     b.HasOne("Food", "Food")
-                        .WithMany("MealPlanFoods")
+                        .WithMany()
                         .HasForeignKey("FoodId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -444,11 +441,6 @@ namespace MealPlanAPI.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Food", b =>
-                {
-                    b.Navigation("MealPlanFoods");
                 });
 
             modelBuilder.Entity("MealPlan", b =>

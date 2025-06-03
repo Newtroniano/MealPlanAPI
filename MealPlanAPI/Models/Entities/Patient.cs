@@ -6,7 +6,9 @@ public class Patient : BaseEntity
     public string Email { get; set; }
     public DateTime DateOfBirth { get; set; }
     public bool IsDeleted { get; set; } = false;
+
     public ICollection<MealPlan> MealPlans { get; set; }
+
 }
 
 public abstract class BaseEntity
