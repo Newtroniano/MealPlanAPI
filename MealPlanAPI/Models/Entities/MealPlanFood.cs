@@ -1,5 +1,6 @@
 ﻿public class MealPlanFood
 {
+    public int Id { get; set; }
     public int MealPlanId { get; set; }
     public MealPlan MealPlan { get; set; }
     public int FoodId { get; set; }
