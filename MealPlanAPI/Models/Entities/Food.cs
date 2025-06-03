@@ -8,6 +8,7 @@
     public double FatPer100g { get; set; }
 
     public bool IsDeleted { get; set; } = false;
+    public ICollection<MealPlanFood> MealPlanFoods { get; set; }
 
 
 

@@ -21,6 +21,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped<IFoodService, FoodService>();
+builder.Services.AddScoped<IMealPlanService, MealPlanService>();
+
 
 
 var app = builder.Build(); 
