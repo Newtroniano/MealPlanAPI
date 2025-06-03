@@ -1,15 +1,21 @@
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var app = builder.Build();
+DotNetEnv.Env.Load(); 
+string dbConnection = Environment.GetEnvironmentVariable("DB_CONNECTION")
+    ?? throw new Exception("DB_CONNECTION não configurada no .env");
 
-// Configure the HTTP request pipeline.
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(dbConnection));
+
+var app = builder.Build(); 
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -17,9 +23,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
