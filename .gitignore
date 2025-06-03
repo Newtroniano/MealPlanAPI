@@ -1,1 +1,9 @@
 .vs/
+*.csproj.user
+
+bin/
+obj/
+
+.env
+appsettings.Development.json
+
