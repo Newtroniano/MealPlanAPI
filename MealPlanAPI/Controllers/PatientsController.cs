@@ -1,137 +1,101 @@
-﻿// MealPlanAPI/Controllers/PatientController.cs
-using AutoMapper;
-using MealPlanAPI.Models.DTOs.PatientDto;
+﻿using MealPlanAPI.Models.DTOs.PatientDto;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-
 
 [ApiController]
 [Route("api/[controller]")]
 public class PatientController : ControllerBase
 {
-    private readonly AppDbContext _dbContext;
-    private readonly IMapper _mapper;
+    private readonly IPatientService _patientService;
 
-    public PatientController(AppDbContext dbContext, IMapper mapper)
+    public PatientController(IPatientService patientService)
     {
-        _dbContext = dbContext;
-        _mapper = mapper;
+        _patientService = patientService;
     }
 
     [HttpPost]
-    public IActionResult CreatePatient([FromBody] CreatePatientDto patientDto)
+    public async Task<IActionResult> CreatePatient([FromBody] CreatePatientDto patientDto)
     {
-        if (!ModelState.IsValid)
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+
+        try
         {
-            return BadRequest(ModelState); 
+            var result = await _patientService.CreatePatientAsync(patientDto);
+            return CreatedAtAction(nameof(GetPatientById), new { id = result.Id }, result);
         }
-
-        var patient = _mapper.Map<Patient>(patientDto);
-
-        _dbContext.Patients.Add(patient);
-        _dbContext.SaveChanges();
-
-        var createdPatientDto = _mapper.Map<PatientDto>(patient);
-
-        return CreatedAtAction(nameof(GetPatientById), new { id = patient.Id }, createdPatientDto);
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpGet("{id}")]
-    public IActionResult GetPatientById(int id)
+    public async Task<IActionResult> GetPatientById(int id)
     {
-        var patient = _dbContext.Patients.Find(id);
-        if (patient == null)
-        {
-            return NotFound();
-        }
-
-        var patientDto = _mapper.Map<PatientDto>(patient);
-        return Ok(patientDto);
+        var patient = await _patientService.GetPatientByIdAsync(id);
+        return patient == null ? NotFound() : Ok(patient);
     }
 
-
     [HttpGet]
-    public IActionResult GetAllPatients(
-    [FromQuery] string? nameFilter = null,
-    [FromQuery] int page = 1,
-    [FromQuery] int pageSize = 10)
+    public async Task<IActionResult> GetAllPatients(
+        [FromQuery] string? nameFilter,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 10)
     {
-        var query = _dbContext.Patients
-            .Where(p => !p.IsDeleted);
-
-        if (!string.IsNullOrEmpty(nameFilter))
-        {
-            query = query.Where(p => p.Name.Contains(nameFilter));
-        }
-
-        var patients = query
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
-            .ToList();
-
-        var patientDtos = _mapper.Map<List<PatientDto>>(patients);
-
-        return Ok(patientDtos);
+        return Ok(await _patientService.GetAllPatientsAsync(nameFilter, page, pageSize));
     }
 
     [HttpDelete("{id}")]
-    public IActionResult DeletePatient(int id)
+    public async Task<IActionResult> DeletePatient(int id)
     {
-        var patient = _dbContext.Patients.Find(id);
-
-        if (patient == null || patient.IsDeleted)
+        try
         {
-            return NotFound("Paciente não encontrado.");
+            await _patientService.DeletePatientAsync(id);
+            return NoContent();
         }
-
-       
-        patient.IsDeleted = true;
-        _dbContext.SaveChanges();
-
-        return NoContent(); 
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
-
-    [HttpPatch("{id}")]
-    public IActionResult ReactivePatient(int id)
+    [HttpPatch("{id}/reactivate")]
+    public async Task<IActionResult> ReactivatePatient(int id)
     {
-        var patient = _dbContext.Patients.Find(id);
-
-        if (patient == null)
+        try
         {
-            return NotFound("Paciente não encontrado.");
+            await _patientService.ReactivatePatientAsync(id);
+            return NoContent();
         }
-
-        if (!patient.IsDeleted)
+        catch (KeyNotFoundException ex)
         {
-            return BadRequest("O paciente já está ativo.");
+            return NotFound(ex.Message);
         }
-
-        patient.IsDeleted = false;
-        _dbContext.SaveChanges();
-
-        return NoContent();
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpPut("{id}")]
-    public IActionResult UpdatePatient(int id, [FromBody] UpdatePatientDto patientDto)
+    public async Task<IActionResult> UpdatePatient(int id, [FromBody] UpdatePatientDto patientDto)
     {
-        if (!ModelState.IsValid)
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+
+        try
         {
-            return BadRequest(ModelState);
+            return Ok(await _patientService.UpdatePatientAsync(id, patientDto));
         }
-
-        var patient = _dbContext.Patients.Find(id);
-
-        if (patient == null || patient.IsDeleted)
+        catch (KeyNotFoundException ex)
         {
-            return NotFound();
+            return NotFound(ex.Message);
         }
-
-        _mapper.Map(patientDto, patient); 
-        _dbContext.SaveChanges();
-
-        return Ok(_mapper.Map<PatientDto>(patient));
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
-
 }
