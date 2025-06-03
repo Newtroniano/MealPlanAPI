@@ -1,6 +1,8 @@
-using Microsoft.EntityFrameworkCore;
 using AutoMapper;
+using MealPlanAPI.Models;
 using MealPlanAPI.Services;
+using MealPlanAPI.Services.Patient;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +20,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddScoped<IPatientService, PatientService>();
+builder.Services.AddScoped<IFoodService, FoodService>();
 
 
 var app = builder.Build(); 

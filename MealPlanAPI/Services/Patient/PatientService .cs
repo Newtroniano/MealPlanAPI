@@ -1,16 +1,8 @@
 ﻿using AutoMapper;
 using MealPlanAPI.Models.DTOs.PatientDto;
+using MealPlanAPI.Services.Patient;
 using Microsoft.EntityFrameworkCore;
 
-public interface IPatientService
-{
-    Task<PatientDto> CreatePatientAsync(CreatePatientDto patientDto);
-    Task<PatientDto?> GetPatientByIdAsync(int id);
-    Task<List<PatientDto>> GetAllPatientsAsync(string? nameFilter, int page, int pageSize);
-    Task DeletePatientAsync(int id);
-    Task ReactivatePatientAsync(int id);
-    Task<PatientDto> UpdatePatientAsync(int id, UpdatePatientDto patientDto);
-}
 
 public class PatientService : IPatientService
 {
