@@ -3,16 +3,19 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace MealPlanAPI.Migrations
+namespace MealPlanAPI.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250603231143_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -98,17 +101,17 @@ namespace MealPlanAPI.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "fb71c649-33b5-476e-8d20-2a49610a5e87",
+                            ConcurrencyStamp = "c8ce622f-ba4f-475a-95fe-b50d9bf4c914",
                             Email = "admin@mealplan.com",
                             EmailConfirmed = true,
                             FullName = "Administrador do Sistema",
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@MEALPLAN.COM",
                             NormalizedUserName = "ADMIN@MEALPLAN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEAA7ydj55tHw7Iq1+v6jweJhDL/gEmrnit+bQYlq1erXwodBDuLWL9kcGoxuPIjKZQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHAclXlcxE0FHFlBNp/ceRXtXz8pnIW71lz36ALwEdoDhvR4yNNL5Oo8An9zM2dk3Q==",
                             PhoneNumberConfirmed = false,
                             Role = 0,
-                            SecurityStamp = "436a2dd5-9149-46de-82f6-9a16dc51e0db",
+                            SecurityStamp = "e0c79607-6e7d-4d4b-83ad-70f8a6302cd2",
                             TwoFactorEnabled = false,
                             UserName = "admin@mealplan.com"
                         });

@@ -1,5 +1,6 @@
 ﻿using MealPlanAPI.Models.DTOs.PatientDto;
 using MealPlanAPI.Services.Patient;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
@@ -14,6 +15,7 @@ public class PatientController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<IActionResult> CreatePatient([FromBody] CreatePatientDto patientDto)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -30,6 +32,7 @@ public class PatientController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [Authorize]
     public async Task<IActionResult> GetPatientById(int id)
     {
         var patient = await _patientService.GetPatientByIdAsync(id);
@@ -37,6 +40,7 @@ public class PatientController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize]
     public async Task<IActionResult> GetAllPatients(
         [FromQuery] string? nameFilter,
         [FromQuery] int page = 1,
@@ -46,6 +50,7 @@ public class PatientController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize]
     public async Task<IActionResult> DeletePatient(int id)
     {
         try
@@ -64,6 +69,7 @@ public class PatientController : ControllerBase
     }
 
     [HttpPatch("{id}/reactivate")]
+    [Authorize]
     public async Task<IActionResult> ReactivatePatient(int id)
     {
         try
@@ -82,6 +88,7 @@ public class PatientController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize]
     public async Task<IActionResult> UpdatePatient(int id, [FromBody] UpdatePatientDto patientDto)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
