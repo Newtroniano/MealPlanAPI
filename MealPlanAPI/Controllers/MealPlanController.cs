@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MealPlanAPI.Models.DTOs.MealPlan;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
@@ -16,6 +17,7 @@ public class MealPlansController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<ActionResult<MealPlanDto>> Create([FromBody] CreateMealPlanDto createDto)
     {
         try
@@ -30,6 +32,7 @@ public class MealPlansController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize]
     public async Task<IActionResult> Update(int id, [FromBody] UpdateMealPlanDto updateDto)
     {
         try
@@ -44,6 +47,7 @@ public class MealPlansController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize]
     public async Task<IActionResult> Delete(int id)
     {
         try
@@ -58,6 +62,7 @@ public class MealPlansController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [Authorize]
     public async Task<ActionResult<MealPlanDto>> GetById(int id)
     {
         try

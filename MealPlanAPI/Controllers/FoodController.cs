@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using MealPlanAPI.Models.DTOs.FoodDto;
+﻿using MealPlanAPI.Models.DTOs.FoodDto;
 using MealPlanAPI.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MealPlanAPI.Controllers
 {
@@ -16,6 +17,7 @@ namespace MealPlanAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<FoodDto>> CreateFood([FromBody] CreateFoodDto foodDto)
         {
             var result = await _foodService.CreateFoodAsync(foodDto);
@@ -30,6 +32,7 @@ namespace MealPlanAPI.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<FoodDto>>> GetAllFoods(
             [FromQuery] string? nameFilter,
             [FromQuery] int page = 1,
@@ -40,6 +43,7 @@ namespace MealPlanAPI.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteFood(int id)
         {
             try
@@ -54,6 +58,7 @@ namespace MealPlanAPI.Controllers
         }
 
         [HttpPatch("{id}/reactivate")]
+        [Authorize]
         public async Task<IActionResult> ReactivateFood(int id)
         {
             try
@@ -72,6 +77,7 @@ namespace MealPlanAPI.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<ActionResult<FoodDto>> UpdateFood(int id, [FromBody] UpdateFoodDto foodDto)
         {
             try
